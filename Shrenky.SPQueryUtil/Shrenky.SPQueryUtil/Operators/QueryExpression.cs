@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shrenky.SPQueryUtil
+namespace Shrenky.SPQueryUtil.Operators
 {
     public abstract class QueryExpression : IFilter
     {

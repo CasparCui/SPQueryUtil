@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shrenky.SPQueryUtil
+namespace Shrenky.SPQueryUtil.Joins
 {
-    public class Or : IFilter
+    public class And : IFilter
     {
         private List<IFilter> Expressions { get; set; }
-        public Or(params IFilter[] expressions)
+        public And(params IFilter[] expressions)
         {
             this.Expressions = new List<IFilter>(expressions);
         }
@@ -25,6 +25,7 @@ namespace Shrenky.SPQueryUtil
                 {
                     childNodeCount = childNodeCount + 1;
                     builder.Append(expression.BuildQuery());
+                    query = builder.ToString();
                 }
                 else
                 {
@@ -32,9 +33,10 @@ namespace Shrenky.SPQueryUtil
                     builder.Clear();
                     builder.Append(query);
                     builder.Append(expression.BuildQuery());
+                    query = builder.ToString();
                 }
             }
-            return query;
+            return string.Format(ExpressionStringTemplate.And, query); ;
         }
     }
 }

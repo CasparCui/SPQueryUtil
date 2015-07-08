@@ -9,8 +9,7 @@ namespace Shrenky.SPQueryUtil
 {
     public class SPFilter : IFilter
     {
-        private SPList list;
-        private string queryString = string.Empty;
+        private SPList QueryOnList { get; set; }
         private List<IFilter> Filters { get; set; }
 
         public string QueryString
@@ -22,7 +21,7 @@ namespace Shrenky.SPQueryUtil
         }
         public SPFilter(SPList list)
         {
-            this.list = list;
+            this.QueryOnList = list;
         }
         public void GetItems(params IFilter[] fitlers)
         {
@@ -33,12 +32,13 @@ namespace Shrenky.SPQueryUtil
         {
             SPQuery query = new SPQuery();
             query.Query = QueryString;
-            return list.GetItems(query);
+            return QueryOnList.GetItems(query);
         }
 
 
         public string BuildQuery()
         {
+            string query = string.Empty;
             if (Filters != null)
             {
                 StringBuilder builder = new StringBuilder();
@@ -46,12 +46,11 @@ namespace Shrenky.SPQueryUtil
                 {
                     builder.Append(filter.BuildQuery());
                 }
-                return string.Format(ExpressionStringTemplate.Where, builder.ToString());
+                query =  string.Format(ExpressionStringTemplate.Where, builder.ToString());
+                query = QueryHelper.CheckAndRetunQueryWithFieldType(QueryOnList, query);
             }
-            else
-            {
-                return string.Empty;
-            }
+
+            return query;
         }
     }
 }
