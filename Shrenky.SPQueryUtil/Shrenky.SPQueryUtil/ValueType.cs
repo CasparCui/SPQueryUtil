@@ -6,11 +6,38 @@ using System.Threading.Tasks;
 
 namespace Shrenky.SPQueryUtil
 {
-    enum ValueType
+    public enum ValueType
     {
         None,
-        Text,
+        AllDayEvent,
+        Attachments,
+        Boolean,
+        Calculated,
+        Choice,
+        Computed,
+        ContentTypeId,
+        Counter,
+        Currency,
+        DateTime,
+        File,
+        GridChoice,
+        Guid,
         Integer,
-        DateTime
+        Lookup,
+        LookupMulti,
+        ModStat,
+        MultiChoice,
+        Note,
+        Number,
+        PageSeparator,
+        Recurrence,
+        Text,
+        ThreadIndex,
+        Threading,
+        URL,
+        User,
+        UserMulti,
+        WorkflowEventType,
+        WorkflowStatus
     }
 }

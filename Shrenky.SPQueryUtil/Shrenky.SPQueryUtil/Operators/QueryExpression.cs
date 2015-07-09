@@ -32,7 +32,7 @@ namespace Shrenky.SPQueryUtil.Operators
         {
             get
             {
-                return "TypePlaceHolder";
+                return this.fieldName; //return field name, will replace the name to the right type later
             }
         }
 
