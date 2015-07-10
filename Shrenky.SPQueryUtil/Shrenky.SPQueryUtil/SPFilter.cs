@@ -9,29 +9,84 @@ namespace Shrenky.SPQueryUtil
 {
     public class SPFilter : IFilter
     {
+        #region fields
+        
+        private string query;
         private SPList QueryOnList { get; set; }
+        private SPView QueryOnView { get; set; }
         private List<IFilter> Filters { get; set; }
 
+        #endregion
+
+        #region Properties
+        
         public string QueryString
         {
             get 
             {
-                return BuildQuery();
+                if (string.IsNullOrEmpty(this.query))
+                {
+                    this.query = this.BuildQuery();
+                }
+
+                return this.query;
             }
         }
+
+        public uint RowLimit { get; set; }
+
+        /*
+            "Scope=\"Recursive\"";
+         */
+        public string ViewAttributes { get; set; }
+
+        /*
+         string.Concat(
+            "<FieldRef Name='AssignedTo' />",
+            "<FieldRef Name='LinkTitle' />",
+            "<FieldRef Name='DueDate' />",
+            "<FieldRef Name='Priority' />");*/
+        public string ViewFields { get; set; }
+
+        public bool ViewFieldsOnly { get; set; }
+
+        #endregion
+
+        #region Constructors
+
         public SPFilter(SPList list)
         {
             this.QueryOnList = list;
         }
-        public void GetItems(params IFilter[] fitlers)
+
+        public SPFilter(SPView view)
         {
-            this.Filters = new List<IFilter>(fitlers);
+            this.QueryOnView = view;
+            this.QueryOnList = view.ParentList;
         }
 
-        public SPListItemCollection GetItems() 
+        #endregion
+
+        #region public methods
+
+        public SPListItemCollection GetItems(params IFilter[] fitlers)
         {
-            SPQuery query = new SPQuery();
+            this.Filters = new List<IFilter>(fitlers);
+            return GetItems();
+        }
+
+        #endregion
+
+        #region private methods
+        
+        private SPListItemCollection GetItems() 
+        {
+            SPQuery query = this.QueryOnView == null ? new SPQuery() : new SPQuery(this.QueryOnView);
             query.Query = QueryString;
+            query.RowLimit = this.RowLimit;
+            query.ViewAttributes = this.ViewAttributes;
+            query.ViewFields = this.ViewFields;
+            query.ViewFieldsOnly = this.ViewFieldsOnly;
             return QueryOnList.GetItems(query);
         }
 
@@ -52,5 +107,7 @@ namespace Shrenky.SPQueryUtil
 
             return query;
         }
+
+        #endregion
     }
 }

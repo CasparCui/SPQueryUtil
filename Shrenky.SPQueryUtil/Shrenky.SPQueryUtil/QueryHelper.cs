@@ -33,7 +33,8 @@ namespace Shrenky.SPQueryUtil
             SPField field = null;
             foreach (SPField f in list.Fields)
             {
-                if (f.Title == fieldName || f.InternalName == fieldName)
+                if (f.Title.Equals(fieldName, StringComparison.OrdinalIgnoreCase)
+                    || f.InternalName.Equals(fieldName, StringComparison.OrdinalIgnoreCase))
                 {
                     field = f;
                     break;

@@ -1,14 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Shrenky.SPQueryUtil;
 using Microsoft.SharePoint;
 using Shrenky.SPQueryUtil.Joins;
+using Shrenky.SPQueryUtil;
 using Shrenky.SPQueryUtil.Operators;
 
 namespace Shrenky.SPQueryUtilTest
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTest2
     {
         [TestMethod]
         public void TestMethod1()
