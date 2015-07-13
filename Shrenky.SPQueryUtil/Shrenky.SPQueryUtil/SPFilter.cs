@@ -69,9 +69,9 @@ namespace Shrenky.SPQueryUtil
 
         #region public methods
 
-        public SPListItemCollection GetItems(params IFilter[] fitlers)
+        public SPListItemCollection GetItems(params IFilter[] filters)
         {
-            this.Filters = new List<IFilter>(fitlers);
+            this.Filters = new List<IFilter>(filters);
             return GetItems();
         }
 
@@ -90,6 +90,11 @@ namespace Shrenky.SPQueryUtil
             return QueryOnList.GetItems(query);
         }
 
+        public string BuildQuery(params IFilter[] filters)
+        {
+            this.Filters = new List<IFilter>(filters);
+            return BuildQuery();
+        }
 
         public string BuildQuery()
         {

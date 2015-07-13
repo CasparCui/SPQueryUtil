@@ -15,14 +15,32 @@ namespace Shrenky.SPQueryUtil
         {
             string newQuery = oldQuery;
             XElement root = XElement.Parse(oldQuery);
+            //replace the value type with the right one
             foreach (XElement ele in root.Descendants("Value"))
             {
                 string fieldName = ele.Attribute("Type").Value;
                 ele.SetAttributeValue("Type", GetValueType(list, fieldName));
             }
 
+            foreach (XElement ele in root.Descendants("FieldRef"))
+            {
+                string fieldName = ele.Attribute("Name").Value;
+                ele.SetAttributeValue("Name", GetFieldInternalName(list, fieldName));
+            }
+
             newQuery = CleanString(root.ToString());
             return newQuery;
+        }
+
+        private static object GetFieldInternalName(SPList list, string fieldName)
+        {
+            string internalName = fieldName;
+            SPField field = GetFieldByName(list, fieldName);
+            if (field != null)
+            {
+                internalName = field.InternalName;
+            }
+            return internalName;
         }
 
         #region private
@@ -30,16 +48,7 @@ namespace Shrenky.SPQueryUtil
         private static string GetValueType(SPList list, string fieldName)
         {
             string valueType = "Text";
-            SPField field = null;
-            foreach (SPField f in list.Fields)
-            {
-                if (f.Title.Equals(fieldName, StringComparison.OrdinalIgnoreCase)
-                    || f.InternalName.Equals(fieldName, StringComparison.OrdinalIgnoreCase))
-                {
-                    field = f;
-                    break;
-                }
-            }
+            SPField field = GetFieldByName(list, fieldName);
 
             if (field != null)
             {
@@ -142,6 +151,21 @@ namespace Shrenky.SPQueryUtil
             }
 
             return valueType;
+        }
+
+        private static SPField GetFieldByName(SPList list, string fieldName)
+        {
+            SPField field = null;
+            foreach (SPField f in list.Fields)
+            {
+                if (f.Title.Equals(fieldName, StringComparison.OrdinalIgnoreCase)
+                    || f.InternalName.Equals(fieldName, StringComparison.OrdinalIgnoreCase))
+                {
+                    field = f;
+                    break;
+                }
+            }
+            return field;
         }
 
         private static string CleanString(string str)
