@@ -24,7 +24,7 @@ namespace Shrenky.SPQueryUtil
         {
             get 
             {
-                if (string.IsNullOrEmpty(this.query))
+                //if (string.IsNullOrEmpty(this.query))
                 {
                     this.query = this.BuildQuery();
                 }
