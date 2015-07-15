@@ -21,20 +21,22 @@ namespace Shrenky.SPQueryUtil.Joins
             int childNodeCount = 0;
             foreach (IFilter expression in Expressions)
             {
-                if(childNodeCount < 2)
+                if (childNodeCount < 2)
                 {
                     childNodeCount = childNodeCount + 1;
                     builder.Append(expression.BuildQuery());
+                    query = builder.ToString();
                 }
                 else
                 {
-                    query = string.Format(ExpressionStringTemplate.And, builder.ToString());
+                    query = string.Format(ExpressionStringTemplate.Or, builder.ToString());
                     builder.Clear();
                     builder.Append(query);
                     builder.Append(expression.BuildQuery());
+                    query = builder.ToString();
                 }
             }
-            return query;
+            return string.Format(ExpressionStringTemplate.Or, query); ;
         }
     }
 }

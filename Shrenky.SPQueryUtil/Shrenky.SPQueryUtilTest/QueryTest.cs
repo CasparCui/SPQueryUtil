@@ -116,6 +116,40 @@ namespace Shrenky.SPQueryUtilTest
             Assert.IsNotNull(query);
             items = filter.GetItems(new Eq("numbercol", "100"));
             Assert.IsTrue(items.Count == 1);
+
+            //DateTime Field
+            DateTime dt = new DateTime(2000, 1, 1, 5, 10, 59);
+            string dts = Microsoft.SharePoint.Utilities.SPUtility.CreateISO8601DateTimeFromSystemDateTime(dt);
+            query = filter.BuildQuery(new Eq("datetimecol", dts));
+            Assert.IsNotNull(query);
+            items = filter.GetItems(new Eq("datetimecol", dts));
+            Assert.IsTrue(items.Count == 1);
+
+            //Bool Field
+            query = filter.BuildQuery(new Eq("BoolCol", "1"));
+            Assert.IsNotNull(query);
+            items = filter.GetItems(new Eq("BoolCol", "1"));
+            Assert.IsTrue(items.Count == 1);
+        }
+
+        [TestMethod]
+        public void TestAnd()
+        {
+            SPFilter filter = new SPFilter(TestList);
+            string query = filter.BuildQuery(new And(new Eq("textCol", "text1"), new Eq("ID", "1")));
+            Assert.IsNotNull(query);
+            var items = filter.GetItems(new And(new Eq("textCol", "text1"), new Eq("ID", "1")));
+            Assert.IsTrue(items.Count == 1);
+        }
+
+        [TestMethod]
+        public void TextOr()
+        {
+            SPFilter filter = new SPFilter(TestList);
+            string query = filter.BuildQuery(new Or(new Eq("textCol", "text1"), new Eq("ID", "2")));
+            Assert.IsNotNull(query);
+            var items = filter.GetItems(new Or(new Eq("textCol", "text1"), new Eq("ID", "2")));
+            Assert.IsTrue(items.Count == 2);
         }
     }
 }
