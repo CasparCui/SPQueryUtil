@@ -13,6 +13,7 @@ namespace Shrenky.SPQueryUtilTest
         string siteUrl = @"http://sp2013test";
         string webUrl = @"/query";
         string listName = "QueryCamlTestList";
+        SPQuery spQuery = new SPQuery();
 
         SPList TestList { get; set; }
 
@@ -105,50 +106,53 @@ namespace Shrenky.SPQueryUtilTest
         public void TestEq()
         {
             //Text Field
-            SPFilter filter = new SPFilter(TestList);
-            string query = filter.BuildQuery(new Eq("textcol", "text1"));
-            Assert.IsNotNull(query);
-            var items = filter.GetItems(new Eq("textcol", "text1"));
+            string caml = CamlBuilder.BuildCaml(TestList, new Eq("textcol", "text1"));
+            Assert.IsNotNull(caml);
+            this.spQuery.Query = caml;
+            var items = this.TestList.GetItems(this.spQuery);
             Assert.IsTrue(items.Count == 1);
 
-            //Number Field
-            query = filter.BuildQuery(new Eq("numbercol", "100"));
-            Assert.IsNotNull(query);
-            items = filter.GetItems(new Eq("numbercol", "100"));
+            //Number Field            
+            caml = CamlBuilder.BuildCaml(TestList, new Eq("numbercol", "100"));
+            Assert.IsNotNull(caml);
+            this.spQuery.Query = caml;
+            items = this.TestList.GetItems(this.spQuery);
             Assert.IsTrue(items.Count == 1);
 
             //DateTime Field
             DateTime dt = new DateTime(2000, 1, 1, 5, 10, 59);
             string dts = Microsoft.SharePoint.Utilities.SPUtility.CreateISO8601DateTimeFromSystemDateTime(dt);
-            query = filter.BuildQuery(new Eq("datetimecol", dts));
-            Assert.IsNotNull(query);
-            items = filter.GetItems(new Eq("datetimecol", dts));
+            caml = CamlBuilder.BuildCaml(TestList, new Eq("datetimecol", dts));
+            Assert.IsNotNull(caml);
+            this.spQuery.Query = caml;
+            items = this.TestList.GetItems(this.spQuery);
             Assert.IsTrue(items.Count == 1);
 
             //Bool Field
-            query = filter.BuildQuery(new Eq("BoolCol", "1"));
-            Assert.IsNotNull(query);
-            items = filter.GetItems(new Eq("BoolCol", "1"));
+            caml = CamlBuilder.BuildCaml(TestList, new Eq("BoolCol", "1"));
+            Assert.IsNotNull(caml);
+            this.spQuery.Query = caml;
+            items = this.TestList.GetItems(this.spQuery);
             Assert.IsTrue(items.Count == 1);
         }
 
         [TestMethod]
         public void TestAnd()
         {
-            SPFilter filter = new SPFilter(TestList);
-            string query = filter.BuildQuery(new And(new Eq("textCol", "text1"), new Eq("ID", "1")));
-            Assert.IsNotNull(query);
-            var items = filter.GetItems(new And(new Eq("textCol", "text1"), new Eq("ID", "1")));
+            string caml = CamlBuilder.BuildCaml(TestList, new And(new Eq("textCol", "text1"), new Eq("ID", "1")));
+            Assert.IsNotNull(caml);
+            this.spQuery.Query = caml;
+            var items = this.TestList.GetItems(this.spQuery);
             Assert.IsTrue(items.Count == 1);
         }
 
         [TestMethod]
         public void TextOr()
         {
-            SPFilter filter = new SPFilter(TestList);
-            string query = filter.BuildQuery(new Or(new Eq("textCol", "text1"), new Eq("ID", "2")));
-            Assert.IsNotNull(query);
-            var items = filter.GetItems(new Or(new Eq("textCol", "text1"), new Eq("ID", "2")));
+            string caml = CamlBuilder.BuildCaml(TestList, new Or(new Eq("textCol", "text1"), new Eq("ID", "2")));
+            Assert.IsNotNull(caml);
+            this.spQuery.Query = caml;
+            var items = this.TestList.GetItems(this.spQuery);
             Assert.IsTrue(items.Count == 2);
         }
     }

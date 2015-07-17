@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CamlBuilder.cs" />
     <Compile Include="Joins\And.cs" />
     <Compile Include="Operators\Contains.cs" />
     <Compile Include="Operators\Eq.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="Operators\NotIncludes.cs" />
     <Compile Include="Operators\OrderBy.cs" />
     <Compile Include="QueryHelper.cs" />
-    <Compile Include="SPFilter.cs" />
     <Compile Include="IFilter.cs" />
     <Compile Include="Joins\Or.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
