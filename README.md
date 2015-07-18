@@ -69,5 +69,5 @@ generates:
       </And>
     </Where>
 
-3, You need to specify the field name and the value only, for examle: `new Eq("status", "Completed")`, the field name is "status", 
- which is not case sensitive, CamlBuilder will handle everything to generate a valid CAML for this expression.
+3, You need to specify the field title and the value only, for examle: `new Eq("status", "Completed")`, the field title is "status", 
+ which is not case sensitive, and the field name can be either Title or InternalName, CamlBuilder will handle everything to generate a valid CAML for this expression.
