@@ -8,7 +8,10 @@ To build CAML query by CamlBuilder:
       using(SPWeb web = site.OpenWeb())
       {
         SPList listToQuery = web.Lists["myList"];
-        string query = CamlBuilder.BuildQuery(listToQuery, new And(new Eq("Status", "Completed"), new Eq("Id", "2")));
+        string queryStr = CamlBuilder.BuildQuery(listToQuery, new And(new Eq("Status", "Completed"), new Eq("Id", "2")));
+        SPQuery query = new SPQuery();
+        query.Query = queryString;
+        var items = listToQuery.GetItems(query);
       }
     }
 
