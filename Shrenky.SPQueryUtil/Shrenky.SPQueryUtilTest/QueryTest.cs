@@ -154,6 +154,12 @@ namespace Shrenky.SPQueryUtilTest
             this.spQuery.Query = caml;
             var items = this.TestList.GetItems(this.spQuery);
             Assert.IsTrue(items.Count == 2);
+
+            caml = CamlBuilder.BuildCaml(TestList, new Or(new Eq("textCol", "text1"), new Eq("ID", "2"), new Eq("ID", "3")));
+            Assert.IsNotNull(caml);
+            this.spQuery.Query = caml;
+            items = this.TestList.GetItems(this.spQuery);
+            Assert.IsTrue(items.Count == 3);
         }
     }
 }
